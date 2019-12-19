@@ -11,20 +11,26 @@ RSpec.describe "Machine #show" do
     )
     @snack_1 = Snack.create(
       name: "M&Ms",
-      cost: 210
+      cost: 200
     )
-    @machine_1.snacks << @snack_1
+    @snack_2 = Snack.create(
+      name: "Skittles",
+      cost: 100
+    )
+    @machine_1.snacks << [@snack_1, @snack_2]
   }
 
   context "As a visitor I expect to see the machine's" do
     before { visit "/machines/#{@machine_1.id}" }
     it "snacks and their associated prices" do
-      expect(page).to have_content("M&M")
-      expect(page).to have_content("210")
+      expect(page).to have_content(@snack_1.name)
+      expect(page).to have_content(@snack_1.cost)
+      expect(page).to have_content(@snack_2.name)
+      expect(page).to have_content(@snack_2.cost)
     end
 
-    xit "average price of all the snacks" do
-
+    it "average price of all the snacks" do
+      expect(page).to have_content("150")
     end
   end
 end
